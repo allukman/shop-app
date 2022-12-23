@@ -31,7 +31,7 @@ class AppDrawer extends StatelessWidget {
                     .pushReplacementNamed(OrdersScreen.routeName);
               }),
           ListTile(
-              leading: Icon(Icons.payment),
+              leading: Icon(Icons.shopping_bag),
               title: Text('Manage Product'),
               onTap: () {
                 Navigator.of(context)
