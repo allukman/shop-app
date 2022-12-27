@@ -85,7 +85,7 @@ class ProductsProvider with ChangeNotifier {
     )
         .then((response) {
       final newProduct = Product(
-        id: DateTime.now().toString(),
+        id: json.decode(response.body)['name'],
         title: product.title,
         description: product.description,
         price: product.price,
@@ -97,6 +97,9 @@ class ProductsProvider with ChangeNotifier {
       // add item to the first
       _items.insert(0, newProduct);
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 
