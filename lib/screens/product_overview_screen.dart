@@ -20,13 +20,13 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var _isInit = true;
   var _isLoading = false;
 
-  @override
-  void initState() {
-    // Future.delayed(Duration.zero).then((_) {
-    //   Provider.of<ProductsProvider>(context).fetchAndSetProducts();
-    // });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.delayed(Duration.zero).then((_) {
+  //     Provider.of<ProductsProvider>(context).fetchAndSetProducts();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   void didChangeDependencies() {
