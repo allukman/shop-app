@@ -6,7 +6,6 @@ import '../widgets/badge.dart';
 import '../widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import '../screens/cart_screen.dart';
-import '../screens/auth_screen.dart';
 import '../providers/products_provider.dart';
 
 enum FilterOptions { Favorites, All }
@@ -29,22 +28,22 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   //   super.initState();
   // }
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
 
-  //     Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
+      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +84,8 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 Icons.shopping_cart,
               ),
               onPressed: () {
-                // Navigator.of(context).pushNamed(CartScreen.routeName);
-                Navigator.of(context).pushNamed(AuthScreen.routeName);
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+                // Navigator.of(context).pushNamed(AuthScreen.routeName);
               },
             ),
           ),
