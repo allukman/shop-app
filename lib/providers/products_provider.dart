@@ -10,13 +10,6 @@ class ProductsProvider with ChangeNotifier {
   // final url = Uri.parse(
   //     'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/products.json');
 
-  Uri getUrl(String path) {
-    final url = Uri.parse(
-        'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path');
-
-    return url;
-  }
-
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -51,6 +44,17 @@ class ProductsProvider with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+
+  final String authToken;
+
+  ProductsProvider(this.authToken, this._items);
+
+  Uri getUrl(String path) {
+    final url = Uri.parse(
+        'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path?auth=$authToken');
+
+    return url;
+  }
 
   List<Product> get items {
     return [..._items];
