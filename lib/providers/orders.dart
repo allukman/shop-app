@@ -16,18 +16,21 @@ class OrderItem {
       @required this.dateTime});
 }
 
-Uri getUrl(String path) {
-  final url = Uri.parse(
-      'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path');
-
-  return url;
-}
-
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
+  final String authToken;
+
+  Orders(this.authToken, this._orders);
 
   List<OrderItem> get orders {
     return [..._orders];
+  }
+
+  Uri getUrl(String path) {
+    final url = Uri.parse(
+        'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path?auth=$authToken');
+
+    return url;
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {

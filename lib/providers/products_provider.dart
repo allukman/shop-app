@@ -143,12 +143,13 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
+    print('deleting item');
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
     notifyListeners();
-    final response = await http.delete(getUrl('produts/$id.json'));
-
+    final response = await http.delete(getUrl('products/$id.json'));
+    print(response.statusCode.toString());
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();

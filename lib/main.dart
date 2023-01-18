@@ -1,3 +1,5 @@
+// ignore_for_file: missing_required_param
+
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/product_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +35,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (ctx) => Cart(),
           ),
-          ChangeNotifierProvider(
-            create: (ctx) => Orders(),
+          ChangeNotifierProxyProvider<Auth, Orders>(
+            update: (ctx, auth, previousOrders) => Orders(
+              auth.token,
+              previousOrders == null ? [] : previousOrders.orders,
+            ),
           ),
         ],
         child: Consumer<Auth>(
