@@ -50,9 +50,9 @@ class ProductsProvider with ChangeNotifier {
 
   ProductsProvider(this.authToken, this.userId, this._items);
 
-  Uri getUrl(String path) {
+  Uri getUrl(String path, String filter) {
     final url = Uri.parse(
-        'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path?auth=$authToken');
+        'https://shop-app-flutter-1c1a6-default-rtdb.firebaseio.com/$path?auth=$authToken$filter');
 
     return url;
   }
@@ -71,13 +71,14 @@ class ProductsProvider with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     try {
-      final response = await http.get(getUrl('products.json'));
+      final response = await http.get(
+          getUrl('products.json', '&orderBy="creatorId"&equalTo="$userId"'));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
         return;
       }
       final favoriteResponse =
-          await http.get(getUrl('userFavorites/$userId.json'));
+          await http.get(getUrl('userFavorites/$userId.json', ''));
       final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
@@ -102,12 +103,13 @@ class ProductsProvider with ChangeNotifier {
     try {
       // Add product to firebase
       final response = await http.post(
-        getUrl('products.json'),
+        getUrl('products.json', ''),
         body: json.encode({
           'title': product.title,
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId': userId,
         }),
       );
 
@@ -131,7 +133,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      await http.patch(getUrl('products/$id.json'),
+      await http.patch(getUrl('products/$id.json', ''),
           body: json.encode({
             'title': newProduct.title,
             'description': newProduct.description,
@@ -151,7 +153,7 @@ class ProductsProvider with ChangeNotifier {
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
     notifyListeners();
-    final response = await http.delete(getUrl('products/$id.json'));
+    final response = await http.delete(getUrl('products/$id.json', ''));
     print(response.statusCode.toString());
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
